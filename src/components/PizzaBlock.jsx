@@ -19,7 +19,7 @@ export const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
               }}
               className={activeType === typeId ? "active" : ""}
             >
-              {typeNames[typeId]} см.
+              {typeNames[typeId]}
             </li>
           ))}
         </ul>

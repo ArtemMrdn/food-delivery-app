@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./scss/app.scss";
 import { Header } from "./components/Header";
 import { Sort } from "./components/Sort";
 import { Categories } from "./components/Categories";
 import { PizzaBlock } from "./components/PizzaBlock";
 
-import pizzas from "./assets/pizzas.json";
-
 function App() {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    fetch("https://65d87fb6c96fbb24c1bba815.mockapi.io/items")
+      .then((res) => res.json())
+      .then((arr) => {
+        setItems(arr);
+      });
+  }, []);
+
   return (
     <div className="wrapper">
       <Header />
@@ -19,7 +27,7 @@ function App() {
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
-            {pizzas.map((obj) => (
+            {items.map((obj) => (
               <PizzaBlock key={obj.id} {...obj} />
             ))}
           </div>
