@@ -11,12 +11,13 @@ import Skeleton from "../PizzaBlock/Skeleton";
 import { Pagination } from "../Pagination";
 import { SearchContext } from "../../App";
 import {
+  selectFilter,
   setCategoryId,
   setCurrentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
 import { list } from "../Sort";
-import { fetchPizzas } from "../redux/slices/pizzaSlice";
+import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice";
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -24,12 +25,9 @@ export const Home = () => {
   const isMounted = useRef(false);
   const isSearch = useRef(false);
 
-  const { searchValue } = useContext(SearchContext);
-
-  const { items, status } = useSelector((state) => state.pizza);
-  const { categoryId, sort, currentPage } = useSelector(
-    (state) => state.filter
-  );
+  const { items, status } = useSelector(selectPizzaData);
+  const { categoryId, sort, currentPage, searchValue } =
+    useSelector(selectFilter);
   const sortType = sort.sortProperty;
 
   const onChangeCategory = (id) => {
