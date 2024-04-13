@@ -1,4 +1,10 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, {
+  ChangeEventHandler,
+  HtmlHTMLAttributes,
+  useCallback,
+  useRef,
+  useState,
+} from "react";
 
 import styles from "./Search.module.scss";
 import debounce from "lodash.debounce";
@@ -23,7 +29,7 @@ export const Search: React.FC = () => {
     []
   );
 
-  const onChangeInput = (event: any) => {
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     updateSearchValue(event.target.value);
   };
