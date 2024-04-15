@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import qs from "qs";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import Sort from "../Sort";
 import { Categories } from "../Categories";
@@ -9,17 +9,23 @@ import { PizzaBlock } from "../PizzaBlock";
 import Skeleton from "../PizzaBlock/Skeleton";
 import { Pagination } from "../Pagination";
 import {
+  FilterSliceState,
   selectFilter,
   setCategoryId,
   setCurrentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
 import { sortList } from "../Sort";
-import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice";
+import {
+  SearchPizzaParams,
+  fetchPizzas,
+  selectPizzaData,
+} from "../redux/slices/pizzaSlice";
+import { useAppDispatch } from "../redux/store";
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isMounted = useRef(false);
 
   const { items, status } = useSelector(selectPizzaData);
@@ -41,63 +47,63 @@ export const Home: React.FC = () => {
     const search = searchValue ? `&search=${searchValue}` : "";
 
     dispatch(
-      //@ts-ignore
       fetchPizzas({
         sortBy,
         order,
         category,
         search,
-        currentPage,
+        currentPage: String(currentPage),
       })
     );
 
     window.scrollTo(0, 0);
   };
 
-  // Если изменили параметры и был первый рендер
-  useEffect(() => {
-    if (isMounted.current) {
-      const params = {
-        categoryId: categoryId > 0 ? categoryId : null,
-        sortProperty: sort.sortProperty,
-        currentPage,
-      };
+  // // Если изменили параметры и был первый рендер
+  // useEffect(() => {
+  //   if (isMounted.current) {
+  //     const params = {
+  //       categoryId: categoryId > 0 ? categoryId : null,
+  //       sortProperty: sort.sortProperty,
+  //       currentPage,
+  //     };
 
-      const queryString = qs.stringify(params, { skipNulls: true });
+  //     const queryString = qs.stringify(params, { skipNulls: true });
 
-      navigate(`/?${queryString}`);
-    }
+  //     navigate(`/?${queryString}`);
+  //   }
 
-    if (!window.location.search) {
-      console.log(111);
-      fetchPizzas();
-    }
-  }, [categoryId, sort.sortProperty, searchValue, currentPage]);
+  //   if (!window.location.search) {
+  //     console.log(111);
+  //     dispatch(fetchPizzas({} as SearchPizzaParams));
+  //   }
+  // }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
   useEffect(() => {
     getPizzas();
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
-  // Парсим параметры при первом рендере
-  useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      const sort = sortList.find(
-        (obj) => obj.sortProperty === params.sortProperty
-      );
-      if (sort) {
-        params.sort = sort;
-      }
-      dispatch(setFilters(params));
-    }
-    isMounted.current = true;
-  }, []);
+  // // Парсим параметры при первом рендере
+  // useEffect(() => {
+  //   if (window.location.search) {
+  //     const params = qs.parse(
+  //       window.location.search.substring(1)
+  //     ) as unknown as SearchPizzaParams;
+  //     const sort = sortList.find((obj) => obj.sortProperty === params.sortBy);
 
-  const pizzas = items.map((obj: any) => (
-    <Link key={obj.id} to={`/pizza/${obj.id}`}>
-      <PizzaBlock {...obj} />
-    </Link>
-  ));
+  //     dispatch(
+  //       setFilters({
+  //         searchValue: params.search,
+  //         categoryId: Number(params.category),
+  //         currentPage: Number(params.currentPage),
+  //         sort: sort || sortList[0],
+  //       })
+  //     );
+  //   }
+  //   isMounted.current = true;
+  // }, []);
+
+  const pizzas = items.map((obj: any) => <PizzaBlock {...obj} />);
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
   ));
