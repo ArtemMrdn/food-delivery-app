@@ -1,9 +1,8 @@
 import React, { useCallback, useRef, useState } from "react";
-
-import styles from "./Search.module.scss";
 import debounce from "lodash.debounce";
 import { useDispatch } from "react-redux";
 import { setSearchValue } from "../redux/filter/slice";
+import styles from "./Search.module.scss"; // Подключаем стили
 
 export const Search: React.FC = () => {
   const dispatch = useDispatch();
@@ -35,8 +34,6 @@ export const Search: React.FC = () => {
         xmlns="http://www.w3.org/2000/svg"
         enableBackground="new 0 0 32 32"
         height="32px"
-        id="Layer_1"
-        version="1.1"
         viewBox="0 0 32 32"
         width="32px"
       >

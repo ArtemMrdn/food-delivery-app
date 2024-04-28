@@ -1,12 +1,11 @@
 .root {
   position: relative;
-  left: -120px;
 }
 
 .input {
   border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 12px 20px;
-  padding-left: 42px;
+  padding-left: 42px; /* Увеличьте левый отступ, чтобы учесть ширину иконки */
   width: 400px;
   border-radius: 10px;
   font-size: 16px;
@@ -21,8 +20,9 @@
   height: 22px;
   opacity: 0.3;
   position: absolute;
-  left: 14px;
-  top: 12px;
+  left: 14px; /* Расположение иконки слева внутри инпута */
+  top: 50%; /* Центрирование вертикально */
+  transform: translateY(-50%); /* Центрирование вертикально */
 }
 
 .clearIcon {
@@ -31,7 +31,8 @@
   opacity: 0.3;
   position: absolute;
   right: 15px;
-  top: 15px;
+  top: 50%; /* Центрирование вертикально */
+  transform: translateY(-50%); /* Центрирование вертикально */
   cursor: pointer;
 
   &:hover {
